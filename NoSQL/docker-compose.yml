@@ -1,0 +1,21 @@
+version: "3.9"
+services:
+  mongo:
+    image: mongo:4.4
+    command: ["--bind_ip_all"]
+    ports:
+      - "27017:27017"
+    working_dir: /work
+    volumes:
+      - ./:/work:ro
+
+  py:
+    image: python:3.9
+    working_dir: /work
+    depends_on:
+      - mongo
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./:/work:ro
+    command: bash -lc "pip install -r requirements.txt || true && pycodestyle --version || true && tail -f /dev/null"
