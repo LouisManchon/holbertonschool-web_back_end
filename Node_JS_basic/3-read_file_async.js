@@ -1,3 +1,4 @@
+// 3-read_file_async.js
 const fs = require('fs');
 
 function countStudents(path) {
@@ -7,17 +8,14 @@ function countStudents(path) {
         return reject(new Error('Cannot load the database'));
       }
 
-      const content = data.split('\n').filter((line) => line.trim() !== '');
+      const lines = data.split('\n').filter((line) => line.trim() !== '');
       const fields = {};
       let total = 0;
 
-      for (let i = 1; i < content.length; i += 1) {
-        const [firstname, , , field] = content[i].split(',');
-
+      for (let i = 1; i < lines.length; i += 1) {
+        const [firstname, , , field] = lines[i].split(',');
         if (field) {
-          if (!fields[field]) {
-            fields[field] = [];
-          }
+          if (!fields[field]) fields[field] = [];
           fields[field].push(firstname);
           total += 1;
         }
